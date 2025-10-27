@@ -13,48 +13,37 @@
  *     }
  * }
  */
-
-import java.util.*;
-
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> finalans = new ArrayList<>();
 
-        // Final answer list to store each level's nodes separately
-        List<List<Integer>> levelOrderList = new ArrayList<>();
-
-        // Base case: if tree is empty
         if (root == null)
-            return levelOrderList;
+            return finalans;
 
-        // Queue to perform BFS (level order traversal)
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root); // Add root node to start traversal
+        Queue<TreeNode> q = new LinkedList<>();
 
-        // Loop until queue becomes empty
-        while (!queue.isEmpty()) {
+        q.offer(root);
 
-            int levelSize = queue.size(); // Number of nodes in the current level
-            List<Integer> currentLevel = new ArrayList<>();
+        while (!q.isEmpty()) {
+            int n = q.size();
 
-            // Process all nodes at the current level
-            for (int i = 0; i < levelSize; i++) {
+            List<Integer> res = new ArrayList<>();
 
-                TreeNode currentNode = queue.poll(); // Remove front node
-                currentLevel.add(currentNode.val);   // Add its value to the current level
+            for (int i = 0; i < n; i++) {
+                TreeNode curr = q.poll();
 
-                // Add left and right children to queue if they exist
-                if (currentNode.left != null)
-                    queue.offer(currentNode.left);
+                res.add(curr.val);
 
-                if (currentNode.right != null)
-                    queue.offer(currentNode.right);
+                if (curr.left != null)
+                    q.offer(curr.left);
+                if (curr.right != null)
+                    q.offer(curr.right);
+
             }
 
-            // After processing one level, add it to the final list
-            levelOrderList.add(currentLevel);
+            finalans.add(res);
         }
 
-        // Return the final level order traversal
-        return levelOrderList;
+        return finalans;
     }
 }
