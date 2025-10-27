@@ -18,12 +18,13 @@ class Solution {
         if (root == null)
             return false;
 
-        if (targetSum == root.val && root.left == null && root.right == null)
-            return true;
+        // if we reach the leaf node 
+        if (root.left == null && root.right == null)
+            return targetSum == root.val;
 
-        
+        int remaining = targetSum - root.val;
 
-        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+        return hasPathSum(root.left, remaining) || hasPathSum(root.right, remaining);
 
     }
 
