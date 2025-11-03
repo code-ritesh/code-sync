@@ -21,7 +21,7 @@ class Solution {
         int s = 0;
         int e = res.size()-1;
 
-        while (s <= e) {
+        while (s < e) {
             int sum = res.get(s) + res.get(e);
 
             if (sum == k)
