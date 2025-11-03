@@ -47,12 +47,17 @@ class Solution {
                 // successor = right subtree ki min value jo hamesha left me milegi
                 // bcz in bst left < root < right
 
-                // find the precidsor or successor
-                TreeNode node = findPredeccesor(root.left);
-                // shift the node
+                // // find the precidsor or successor
+                // TreeNode node = findPredeccesor(root.left);
+                // // shift the node
+                // root.val = node.val;
+                // // delete the node
+                // root.left = root.left = deleteNode(root.left , node.val);
+
+                TreeNode node = findSuccessor(root.right);
                 root.val = node.val;
-                // delete the node
-                root.left = root.left = deleteNode(root.left , node.val);
+                root.right = deleteNode(root.right ,node.val);
+
 
             }
         }
@@ -63,6 +68,14 @@ class Solution {
     TreeNode findPredeccesor(TreeNode node){
         while(node.right != null){
             node = node.right;
+        }
+
+        return node;
+    }
+
+    TreeNode findSuccessor(TreeNode node){
+        while(node.left != null){
+            node = node.left;
         }
 
         return node;
