@@ -17,6 +17,8 @@ class Solution {
     public TreeNode deleteNode(TreeNode root, int key) {
         if(root == null ) return root;
 
+        // left < root < right
+
         if( key < root.val ){
             // left subtree
             root.left = deleteNode(root.left , key);
