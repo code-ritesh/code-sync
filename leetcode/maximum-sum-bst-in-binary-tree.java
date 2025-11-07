@@ -32,6 +32,7 @@ class Solution {
         int[] leftST = dfs(root.left);
         int[] rightST = dfs(root.right);
 
+        // checks the bst 
         if (root.val > leftST[1] && root.val < rightST[0]) {
             int curSum = leftST[2] + rightST[2] + root.val;
             ans = Math.max(ans, curSum);
@@ -40,6 +41,7 @@ class Solution {
             return new int[] { minVal, maxVal, curSum };
         }
 
+        // not bst 
         int maxSum = Math.max(leftST[2], rightST[2]);
         return new int[] { Integer.MIN_VALUE, Integer.MAX_VALUE, maxSum };
     }
