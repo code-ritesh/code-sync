@@ -14,57 +14,62 @@
  * }
  */
 
-class Pair {
+class pair {
     TreeNode node;
     int x;
     int y;
 
-    public Pair(int _x, int _y, TreeNode _node) {
-        x = _x;
-        y = _y;
-        node = _node;
+    pair(TreeNode node, int x, int y) {
+        this.node = node;
+        this.x = x;
+        this.y = y;
     }
 }
 
 class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        //your code goes here
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null)
-            return result;
-        TreeMap<Integer, TreeMap<Integer, PriorityQueue<Integer>>> map = new TreeMap<>();
-        Queue<Pair> queue = new LinkedList<>();
+         List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
 
-        queue.offer(new Pair(0, 0, root));
+        Queue <pair> q = new LinkedList<>();
 
-        while (!queue.isEmpty()) {
-            Pair pair = queue.poll();
-            int x = pair.x;
-            int y = pair.y;
-            TreeNode node = pair.node;
+        TreeMap <Integer , TreeMap < Integer ,  PriorityQueue<Integer>>> map = new  TreeMap<>();
 
-            map.putIfAbsent(x, new TreeMap<>());
-            map.get(x).putIfAbsent(y, new PriorityQueue<>());
+        q.offer(new pair(root,0,0));
 
-            map.get(x).get(y).offer(node.val);
+        while(!q.isEmpty()){
+            pair p = q.poll();
+            int vertical = p.x;
+            int level = p.y;
+            TreeNode curr = p.node;
 
-            if (node.left != null) {
-                queue.offer(new Pair(x - 1, y + 1, node.left));
+            map.putIfAbsent(vertical , new TreeMap<>());
+            map.get(vertical).putIfAbsent(level , new PriorityQueue<>());
+
+            map.get(vertical).get(level).offer(curr.val);
+
+            if(curr.left != null){
+                q.offer(new pair(curr.left , vertical-1 , level+1));
             }
-            if (node.right != null) {
-                queue.offer(new Pair(x + 1, y + 1, node.right));
+
+            if(curr.right != null){
+                q.offer(new pair(curr.right , vertical+1 , level+1));
             }
         }
-        
-        for (var val : map.values()) {
-            List<Integer> curr = new ArrayList<>();
-            for (var v : val.values()) {
-                while (!v.isEmpty()) {
-                    curr.add(v.poll());
+
+
+        for( var  temp : map.values() ){
+            ArrayList<Integer> curr = new ArrayList<>();
+
+            for( var pq : temp.values()){
+                while(!pq.isEmpty()){
+                    curr.add(pq.poll());
                 }
             }
-            result.add(curr);
+
+            res.add(curr);
         }
-        return result;
+
+        return res;
     }
 }
