@@ -28,6 +28,7 @@ class TimeMap {
         TreeMap<Integer, String> submap = map.get(key);
 
         Integer prevtimestamp = submap.floorKey(timestamp);
+        // floor key will give us the largest key before the asked key
 
         if (prevtimestamp == null)
             return "";
