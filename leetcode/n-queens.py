@@ -1,58 +1,73 @@
 import java.util.*;
 
 class Solution {
-    public boolean canPlace(char[][] board, int row, int col, int n) {
-        // Check same column above current row
-        for (int i = 0; i < row; i++) {
-            if (board[i][col] == 'Q') {
-                return false;
-            }
+    List<List<String>> res;
+
+    boolean isSafe(char[][] board, int row, int col) {
+        int n = board.length;
+        int r = row, c = col;
+
+        // upper left
+        while (r >= 0 && c >= 0) {
+            if (board[r][c] == 'Q') return false;
+            r--;
+            c--;
         }
 
-        // Check upper-left diagonal
-        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
-            if (board[i][j] == 'Q') {
-                return false;
-            }
+        r = row;
+        c = col;
+
+        // upper right
+        while (r >= 0 && c < n) {
+            if (board[r][c] == 'Q') return false;
+            r--;
+            c++;
         }
 
-        // Check upper-right diagonal
-        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
-            if (board[i][j] == 'Q') {
-                return false;
-            }
+        // same column (upper)
+        r = row;
+        c = col;
+        while (r >= 0) {
+            if (board[r][c] == 'Q') return false;
+            r--;
         }
 
         return true;
     }
 
-    public void backtrack(List<List<String>> result, char[][] board, int row, int n) {
+    void solve(char[][] board, int row) {
+        int n = board.length;
+
         if (row == n) {
-            List<String> temp = new ArrayList<>();
+            ArrayList<String> temp = new ArrayList<>();
             for (int i = 0; i < n; i++) {
                 temp.add(new String(board[i]));
             }
-            result.add(temp);
+            res.add(temp);
             return;
         }
 
         for (int col = 0; col < n; col++) {
-            if (canPlace(board, row, col, n)) {
+            if (isSafe(board, row, col)) {
                 board[row][col] = 'Q';
-                backtrack(result, board, row + 1, n);
+                solve(board, row + 1);
                 board[row][col] = '.';
             }
         }
     }
 
     public List<List<String>> solveNQueens(int n) {
+        res = new ArrayList<>(); // ✅ initialize class-level res
         char[][] board = new char[n][n];
+
+        // fill board with dots
         for (int i = 0; i < n; i++) {
-            Arrays.fill(board[i], '.');
+            for(int j = 0 ; j < n ; j++){
+                board[i][j] = '.';
+            }
         }
 
-        List<List<String>> result = new ArrayList<>();
-        backtrack(result, board, 0, n);
-        return result;
+        solve(board, 0);
+        return res;
     }
 }
