@@ -1,73 +1,58 @@
+import java.util.*;
+
 class Solution {
-    List<List<String>> result = new ArrayList<>();
-
-    // Check if placing a queen at (row, col) is safe
-    boolean isSafe(boolean[][] board, int row, int col) {
-        int n = board.length;
-        int i = row, j = col;
-
-        // check upward column
-        while (i >= 0) {
-            if (board[i][j]) return false;
-            i--;
+    public boolean canPlace(char[][] board, int row, int col, int n) {
+        // Check same column above current row
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') {
+                return false;
+            }
         }
 
-        // check upper-left diagonal
-        i = row; j = col;
-        while (i >= 0 && j >= 0) {
-            if (board[i][j]) return false;
-            i--;
-            j--;
+        // Check upper-left diagonal
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
         }
 
-        // check upper-right diagonal
-        i = row; j = col;
-        while (i >= 0 && j < n) {
-            if (board[i][j]) return false;
-            i--;
-            j++;
+        // Check upper-right diagonal
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q') {
+                return false;
+            }
         }
 
         return true;
     }
 
-    void solve(boolean[][] board, int row) {
-        int n = board.length;
-
-        // all queens placed successfully
+    public void backtrack(List<List<String>> result, char[][] board, int row, int n) {
         if (row == n) {
-            addBoard(board);
+            List<String> temp = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                temp.add(new String(board[i]));
+            }
+            result.add(temp);
             return;
         }
 
         for (int col = 0; col < n; col++) {
-            if (isSafe(board, row, col)) {
-                board[row][col] = true;  // place queen
-                solve(board, row + 1);
-                board[row][col] = false; // backtrack
+            if (canPlace(board, row, col, n)) {
+                board[row][col] = 'Q';
+                backtrack(result, board, row + 1, n);
+                board[row][col] = '.';
             }
         }
-    }
-
-    // convert true/false board → String board
-    void addBoard(boolean[][] board) {
-        int n = board.length;
-        List<String> temp = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            StringBuilder sb = new StringBuilder();
-            for (int j = 0; j < n; j++) {
-                sb.append(board[i][j] ? 'Q' : '.');
-            }
-            temp.add(sb.toString());
-        }
-
-        result.add(temp);
     }
 
     public List<List<String>> solveNQueens(int n) {
-        boolean[][] board = new boolean[n][n];
-        solve(board, 0);
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '.');
+        }
+
+        List<List<String>> result = new ArrayList<>();
+        backtrack(result, board, 0, n);
         return result;
     }
 }
