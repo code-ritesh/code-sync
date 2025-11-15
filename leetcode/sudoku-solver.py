@@ -1,56 +1,55 @@
 class Solution {
 
-    
-    boolean isValid(char[][] board, int row, int col, char c) {
+    boolean isValid(char[][] board, int row, int col, char digit) {
+        int n = board.length;
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < n; i++) {
+            if (board[row][i] == digit) return false;
+            if (board[i][col] == digit) return false;
+        }
 
-            // Row check
-            if (board[row][i] == c) return false;
+        int sr = (row / 3) * 3;
+        int sc = (col / 3) * 3;
 
-            // Column check
-            if (board[i][col] == c) return false;
-
-            // 3x3 box check
-            int boxRow = (row / 3) * 3 + i / 3;
-            int boxCol = (col / 3) * 3 + i % 3;
-
-            if (board[boxRow][boxCol] == c) return false;
+        for (int a = 0; a < 3; a++) {
+            for (int b = 0; b < 3; b++) {
+                if (board[sr + a][sc + b] == digit) return false;
+            }
         }
 
         return true;
     }
 
+    boolean helper(char[][] board) {
+        int n = board.length;
 
-    // Backtracking solver
-    boolean solve(char[][] board) {
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
 
                 if (board[i][j] == '.') {
 
-                    for (char c = '1'; c <= '9'; c++) {
+                    for (char d = '1'; d <= '9'; d++) {
 
-                        if (isValid(board, i, j, c)) {
-                            board[i][j] = c;
+                        if (isValid(board, i, j, d)) {
+                            board[i][j] = d;
 
-                            if (solve(board)) return true;  
+                            if (helper(board)) return true;
 
-                            board[i][j] = '.';  
+                            board[i][j] = '.';
                         }
                     }
 
-                    return false; 
+                    // ❗ If no digit works, must backtrack
+                    return false;
                 }
             }
         }
 
-        return true; // there is no empty cell
+        // ❗ No empty cells left → solved
+        return true;
     }
 
-
     public void solveSudoku(char[][] board) {
-        solve(board);
+        helper(board);
     }
 }
