@@ -5,6 +5,6 @@ class Solution {
 
         if( p[0] == q[0] || p[0] == q[1] ) return p[0];
 
-        return q[0];
+        return p[1];
     }
 }
