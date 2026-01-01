@@ -8,9 +8,13 @@ class Solution {
 
         for(int x : nums ) range += x;
 
+        
+        if(range < target || (target + range) % 2 == 1  ) return 0;
+
         int s1 = (range + target ) / 2;
 
-        if(range < target || (target + range) % 2 == 1  ) return 0;
+        if (s1 < 0) return 0; 
+
 
         return helper(nums , s1);
     }
