@@ -5,7 +5,7 @@ class Solution {
         int[][] dp = new int[n+1][amount+1];
 
         for (int i = 0; i <= n; i++) {
-            dp[i][0] = 1;
+            dp[i][0] = 1; // base case 
         }
 
         for(int i = 1 ; i <= n ; i++){
