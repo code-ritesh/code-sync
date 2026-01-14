@@ -4,9 +4,9 @@ class Solution {
         int n = nums.length;
         int i = 0;
 
-        while(i <= maxidx ){
+        while(i <= maxidx) {
             maxidx = Math.max(maxidx , i + nums[i]);
-            if( maxidx >= (n-1) ) return true;
+            if( maxidx >= (n-1)) return true;
             i++;
         }
 
