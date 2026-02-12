@@ -13,6 +13,6 @@ class Solution {
             else st.pop();
         }
 
-        return true;
+        return st.isEmpty();
     }
 }
