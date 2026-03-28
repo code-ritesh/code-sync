@@ -18,7 +18,7 @@ class Solution {
 
         while (j < s.length() && i >= 0 && s.charAt(i) == s.charAt(j)) {
 
-            System.out.println(s.substring(i, j + 1));
+            //System.out.println(s.substring(i, j + 1));
             count++;
             i--;
             j++;
