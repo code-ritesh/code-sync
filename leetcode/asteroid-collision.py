@@ -2,18 +2,16 @@ class Solution {
     public int[] asteroidCollision(int[] asteroids) {
         Stack <Integer> st = new Stack<>();
 
-        for(int x : asteroids){
+        for(int  x : asteroids){
 
-            while(!st.isEmpty() && st.peek() > 0 && x < 0 ){
-
-                if( Math.abs(x) > st.peek() ){
+            while( !st.isEmpty() && x < 0 && st.peek() > 0 ){
+                if( Math.abs(x) == Math.abs(st.peek())){
                     st.pop();
-                    continue; // check for another elements in stack
                 }
 
-                else if( st.peek() == Math.abs(x) ){
-                    // if both of same size and have different direction just remove the stack one 
+                else if( Math.abs(x) > Math.abs(st.peek()) ){
                     st.pop();
+                    continue;
                 }
 
                 x = 0;
@@ -24,7 +22,7 @@ class Solution {
 
         int[] res = new int[st.size()];
 
-        for(int i = res.length -1 ; i >= 0 ; i--){
+        for(int i = res.length - 1 ; i >= 0 ; i--){
             res[i] = st.pop();
         }
 
