@@ -6,36 +6,30 @@ class Solution {
         char[][] res = new char[n][m];
 
         // Step 1: Transpose
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 res[j][i] = boxGrid[i][j];
             }
         }
 
         // Step 2: Reverse each row
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++) {
             reverserow(res[i]);
         }
 
         // Step 3: Apply gravity
-        for(int col = 0; col < m; col++){
-            for(int row = n - 1; row >= 0; row--){
+        for (int col = 0; col < m; col++) {
+            int emptyRow = n - 1;
 
-                if(res[row][col] == '.'){
-                    int stonerow = -1;
+            for (int row = n - 1; row >= 0; row--) {
 
-                    for(int k = row - 1; k >= 0; k--){
-                        if(res[k][col] == '*') break;
-                        if(res[k][col] == '#'){
-                            stonerow = k;
-                            break;
-                        }
-                    }
-
-                    if(stonerow != -1){
-                        res[row][col] = '#';
-                        res[stonerow][col] = '.';
-                    }
+                if (res[row][col] == '*') {
+                    emptyRow = row - 1; // reset after obstacle
+                } else if (res[row][col] == '#') {
+                    // move stone down
+                    res[row][col] = '.';
+                    res[emptyRow][col] = '#';
+                    emptyRow--;
                 }
             }
         }
@@ -43,10 +37,10 @@ class Solution {
         return res;
     }
 
-    void reverserow(char[] row){
+    void reverserow(char[] row) {
         int left = 0, right = row.length - 1;
 
-        while(left < right){
+        while (left < right) {
             char temp = row[left];
             row[left] = row[right];
             row[right] = temp;
